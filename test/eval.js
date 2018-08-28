@@ -9,7 +9,7 @@ function fixturePath(file) {
 describe('workerjs', function() {
   describe('eval worker', function() {
     it('should be able to do simple web workers', function(done) {
-      var worker = new Worker(fixturePath('evalworker.js'));
+      var worker = new Worker(fixturePath('evalworker.js'), false);
       worker.onmessage = function (msg) {
         expect(msg).to.eql({ data: { msg: 'hello', y: 84,
           received: 'another message' } });
@@ -20,7 +20,7 @@ describe('workerjs', function() {
 
     it('should spawn in a different pid', function(done) {
       var pid = process.pid;
-      var worker = new Worker(fixturePath('pidworker.js'));
+      var worker = new Worker(fixturePath('pidworker.js'), false);
       worker.onmessage = function (msg) {
         expect(msg.data).to.not.equal(pid);
         done();
@@ -29,7 +29,7 @@ describe('workerjs', function() {
 
     it('should be able to offload CPU intensive activity', function(done) {
       var start = Date.now();
-      var worker = new Worker(fixturePath('fibworker.js'));
+      var worker = new Worker(fixturePath('fibworker.js'), false);
       worker.onmessage = function (msg) {
         expect(msg.data).to.equal(1346269);
         done();
@@ -38,8 +38,18 @@ describe('workerjs', function() {
       expect(Date.now() - start).to.be.below(20);
     });
 
+    // This actually works as well, but module.exports won't be executed
+    it('should be able to require other modules', function(done) {
+      var worker = new Worker(fixturePath('requireworker.js'), false);
+      worker.addEventListener('message', function (msg) {
+        expect(msg.data).to.equal(87178291200.00021);
+        done();
+      });
+      worker.postMessage(15);
+    });
+
     it('should be able to use addEventListener', function(done) {
-      var worker = new Worker(fixturePath('addEventListenerWorker.js'));
+      var worker = new Worker(fixturePath('addEventListenerWorker.js'), false);
       worker.addEventListener('message', function (msg) {
         expect(msg).to.eql({ data: { msg: 'hello', y: 84,
           received: 'another message' } });
