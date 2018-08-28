@@ -41,8 +41,8 @@ process.once('message', function(modulePath) {
     global.self.onerror && global.self.onerror(err);
   });
 
-  require('babel-register')({
-    ignore: /node_modules\/(?!devtools-)/,
+  require('@babel/register')({
+    ignore: [ /node_modules\/(?!devtools-)/ ],
   });
 
   var module = require(modulePath);

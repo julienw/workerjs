@@ -25,7 +25,8 @@
     "url": "https://github.com/eugeneware/workerjs/issues"
   },
   "dependencies": {
-    "babel-register": "^6.18.0"
+    "@babel/core": "^7.0.0",
+    "@babel/register": "^7.0.0"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",
