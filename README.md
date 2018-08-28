@@ -59,12 +59,10 @@ function fibo (n) {
 ## Node Mode - allowing require()
 
 I've also added a "node-friendly" option that allows the Web Worker to use
-require() and other node.js conventions. To use this, just pass a boolean
-value of `true` through to the second argument of the `Worker` contructor:
-
+require() and other node.js conventions.
 ``` js
 // app.js - run with "node app.js"
-var worker = new Worker('/path/to/gammaworker.js', true);
+var worker = new Worker('/path/to/gammaworker.js');
 worker.addEventListener('message', function (msg) {
   expect(msg.data).to.equal(87178291200.00021);
   done();
@@ -86,7 +84,7 @@ behaviour in [webworkify](https://github.com/substack/webworkify):
 
 ``` js
 // app.js - run with "node app.js"
-var worker = new Worker('/path/to/gammaworker2.js', true);
+var worker = new Worker('/path/to/gammaworker2.js');
 worker.addEventListener('message', function (msg) {
   expect(msg.data).to.equal(87178291200.00021);
   done();
@@ -102,3 +100,12 @@ module.exports = function () {
   postMessage(gamma(msg.data));
 };
 ```
+
+If you want to opt-out of this feature, you can pass `false` as a parameter to
+the Worker constructor:
+```js
+var worker = new Worker('/path/to/worker.js', false);
+```
+
+Note: in previous versions of this library, the "node-friendly" option was
+optional and needed to be explicitly enabled by passing "true" as parameter.

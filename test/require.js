@@ -9,7 +9,7 @@ function fixturePath(file) {
 describe('workerjs', function() {
   describe('require worker', function() {
     it('should be able to do simple web workers', function(done) {
-      var worker = new Worker(fixturePath('evalworker.js'), true);
+      var worker = new Worker(fixturePath('evalworker.js'));
       worker.onmessage = function (msg) {
         expect(msg).to.eql({ data: { msg: 'hello', y: 84,
           received: 'another message' } });
@@ -20,7 +20,7 @@ describe('workerjs', function() {
 
     it('should spawn in a different pid', function(done) {
       var pid = process.pid;
-      var worker = new Worker(fixturePath('pidworker.js'), true);
+      var worker = new Worker(fixturePath('pidworker.js'));
       worker.onmessage = function (msg) {
         expect(msg.data).to.not.equal(pid);
         done();
@@ -29,7 +29,7 @@ describe('workerjs', function() {
 
     it('should be able to offload CPU intensive activity', function(done) {
       var start = Date.now();
-      var worker = new Worker(fixturePath('fibworker.js'), true);
+      var worker = new Worker(fixturePath('fibworker.js'));
       worker.onmessage = function (msg) {
         expect(msg.data).to.equal(1346269);
         done();
@@ -39,7 +39,7 @@ describe('workerjs', function() {
     });
 
     it('should be able to use addEventListener', function(done) {
-      var worker = new Worker(fixturePath('addEventListenerWorker.js'), true);
+      var worker = new Worker(fixturePath('addEventListenerWorker.js'));
       worker.addEventListener('message', function (msg) {
         expect(msg).to.eql({ data: { msg: 'hello', y: 84,
           received: 'another message' } });
@@ -49,7 +49,7 @@ describe('workerjs', function() {
     });
 
     it('should be able to require other modules', function(done) {
-      var worker = new Worker(fixturePath('requireworker.js'), true);
+      var worker = new Worker(fixturePath('requireworker.js'));
       worker.addEventListener('message', function (msg) {
         expect(msg.data).to.equal(87178291200.00021);
         done();
@@ -58,7 +58,7 @@ describe('workerjs', function() {
     });
 
     it('should run the module.exports function', function(done) {
-      var worker = new Worker(fixturePath('exportsworker.js'), true);
+      var worker = new Worker(fixturePath('exportsworker.js'));
       worker.addEventListener('message', function (msg) {
         expect(msg.data).to.equal(42);
         done();

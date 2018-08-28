@@ -4,7 +4,7 @@ var bootstrap = fs.readFileSync(path.join(__dirname, 'bootstrap.js'), 'utf8');
 
 module.exports = Worker;
 function Worker(file, type) {
-  if (type === true) {
+  if (type === false) {
     type = 'eval';
   } else {
     type = 'require';
